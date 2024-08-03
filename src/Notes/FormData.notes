@@ -1,27 +1,27 @@
-import React, { useRef, useState } from "react";
-import Header from "./Header";
-import { checkValidate } from "../utils/validateUser";
+# Getting form data using useState hook
 
+```js
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
 
-  const [errorMessage, setErrorMessage] = useState(null);
-
-  const email = useRef(null);
-  const password = useRef(null);
-  const fullName = useRef(null);
-
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+  });
   const handleUserInfo = (e) => {
-    let message = isSignInForm
-      ? checkValidate("signin", email.current.value, password.current.value)
-      : checkValidate(
-          "signup",
-          email.current.value,
-          password.current.value,
-          fullName.current.value
-        );
-    setErrorMessage(message);
+    const { name, value } = e.target;
+
+    console.log(name);
+    console.log(value);
+    // setUserInfo();
+
+    setUserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
+
+  console.log("USERinfo", userInfo);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +29,6 @@ const Login = () => {
 
   const toggleForm = () => {
     setIsSignInForm(!isSignInForm);
-    setErrorMessage("");
   };
 
   return (
@@ -51,7 +50,6 @@ const Login = () => {
           <h1 className="text-3xl font-bold my-4">Sign In</h1>
           {!isSignInForm && (
             <input
-              ref={fullName}
               type="text"
               placeholder="Full Name"
               className="my-3 p-3 bg-[#3b3b3ba4] placeholder-zinc-400  border rounded-sm"
@@ -60,26 +58,24 @@ const Login = () => {
 
           <input
             name="email"
-            ref={email} //this will help us get reference from the input box in the form of object
+            value={userInfo.email}
             type="text"
             placeholder="Email or phone number"
             className="my-3 p-3 bg-[#3b3b3ba4] placeholder-zinc-400  border rounded-sm"
+            onChange={handleUserInfo}
+            // onChange={(e) => {
+            //   console.log(e.target.value);
+            // }}
           />
           <input
             name="password"
-            ref={password} //this will help us get reference from the input box
-            // value={userInfo.password}
+            value={userInfo.password}
             type="password"
             placeholder="Enter password"
             className="my-3 p-3 bg-[#3b3b3ba4]  placeholder-zinc-400 border rounded-sm"
+            onChange={handleUserInfo}
           />
-
-          <span className="text-red-600 font-bold pt-2">{errorMessage}</span>
-
-          <button
-            className="bg-red-800 p-2 rounded-lg my-6 opacity-100"
-            onClick={handleUserInfo}
-          >
+          <button className="bg-red-800 p-2 rounded-lg my-6 opacity-100">
             SignIn
           </button>
 
@@ -97,5 +93,4 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;
+```
