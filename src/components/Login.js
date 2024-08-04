@@ -1,10 +1,14 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidate } from "../utils/validateUser";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
-
   const [errorMessage, setErrorMessage] = useState(null);
 
   const email = useRef(null);
@@ -21,6 +25,49 @@ const Login = () => {
           fullName.current.value
         );
     setErrorMessage(message);
+
+    if (message) return;
+
+    //create the user
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+
+          console.log("user created ---- ", user);
+        })
+        .catch((error) => {
+          console.log("asdas");
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(`${errorCode}`);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // setErrorMessage(`${errorCode}===${errorMessage}`);
+          setErrorMessage(
+            errorMessage.includes("invalid") && "* Invalid Credentials"
+          );
+        });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -28,6 +75,8 @@ const Login = () => {
   };
 
   const toggleForm = () => {
+    email.current.value = "";
+    password.current.value = "";
     setIsSignInForm(!isSignInForm);
     setErrorMessage("");
   };
