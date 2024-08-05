@@ -7,14 +7,12 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const email = useRef(null);
@@ -58,7 +56,6 @@ const Login = () => {
         );
 
         await user.reload();
-        navigate("/browse");
       } catch (error) {
         // const errorCode = error.code;
         const errorMessage = error.message;
@@ -73,7 +70,6 @@ const Login = () => {
           email.current.value,
           password.current.value
         );
-        navigate("/browse");
       } catch (error) {
         // const errorCode = error.code;
         const errorMessage = error.message;
