@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { FORM_TYPE, ERROR_CODES } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -21,9 +22,13 @@ const Login = () => {
 
   const handleUserInfo = async () => {
     let message = isSignInForm
-      ? checkValidate("signin", email.current.value, password.current.value)
+      ? checkValidate(
+          FORM_TYPE.SIGNIN,
+          email.current.value,
+          password.current.value
+        )
       : checkValidate(
-          "signup",
+          FORM_TYPE.SIGNUP,
           email.current.value,
           password.current.value,
           fullName.current.value
@@ -60,7 +65,7 @@ const Login = () => {
         // const errorCode = error.code;
         const errorMessage = error.message;
         setErrorMessage(
-          errorMessage.includes("invalid") && "* Invalid Credentials"
+          errorMessage.includes("invalid") && ERROR_CODES.INVALID_CREDENTIALS
         );
       }
     } else {
@@ -74,7 +79,7 @@ const Login = () => {
         // const errorCode = error.code;
         const errorMessage = error.message;
         setErrorMessage(
-          errorMessage.includes("invalid") && "* Invalid Credentials"
+          errorMessage.includes("invalid") && ERROR_CODES.INVALID_CREDENTIALS
         );
       }
     }
