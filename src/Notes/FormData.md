@@ -63,9 +63,6 @@ const Login = () => {
             placeholder="Email or phone number"
             className="my-3 p-3 bg-[#3b3b3ba4] placeholder-zinc-400  border rounded-sm"
             onChange={handleUserInfo}
-            // onChange={(e) => {
-            //   console.log(e.target.value);
-            // }}
           />
           <input
             name="password"
