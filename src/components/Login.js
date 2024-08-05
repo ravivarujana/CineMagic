@@ -5,17 +5,23 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const email = useRef(null);
   const password = useRef(null);
   const fullName = useRef(null);
 
-  const handleUserInfo = (e) => {
+  const handleUserInfo = async () => {
     let message = isSignInForm
       ? checkValidate("signin", email.current.value, password.current.value)
       : checkValidate(
@@ -30,43 +36,51 @@ const Login = () => {
 
     //create the user
     if (!isSignInForm) {
-      createUserWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        );
 
-          console.log("user created ---- ", user);
-        })
-        .catch((error) => {
-          console.log("asdas");
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(`${errorCode}`);
+        const user = userCredential.user;
+
+        await updateProfile(user, {
+          displayName: fullName.current.value,
         });
+
+        dispatch(
+          addUser({
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+          })
+        );
+
+        await user.reload();
+        navigate("/browse");
+      } catch (error) {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(
+          errorMessage.includes("invalid") && "* Invalid Credentials"
+        );
+      }
     } else {
-      signInWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-
-          console.log(user);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // setErrorMessage(`${errorCode}===${errorMessage}`);
-          setErrorMessage(
-            errorMessage.includes("invalid") && "* Invalid Credentials"
-          );
-        });
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        );
+        navigate("/browse");
+      } catch (error) {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(
+          errorMessage.includes("invalid") && "* Invalid Credentials"
+        );
+      }
     }
   };
 
