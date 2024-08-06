@@ -20,7 +20,25 @@ export const API_OPTIONS = {
   },
 };
 
-export const MOVIE_LIST_API = {
-  NOW_PLAYING:
-    "https://api.themoviedb.org/3/movie/now_playing?page=1",
+export const MOVIE_TV_LIST_API = {
+  MOVIE_LIST: "https://api.themoviedb.org/3/movie/now_playing?page=1",
+  TV_LIST: "https://api.themoviedb.org/3/tv/now_playing?page=1",
+};
+
+const MOVIE_TYPE = {
+  UPCOMING: "upcoming",
+  NOW_PLAYING: "now_playing",
+};
+
+const TV_SERIES_TYPE = {
+  AIRING_TODAY: "airing_today",
+  ON_THE_AIR: "on_the_air",
+};
+export const MOVIE_TV_LIST_TYPE = {
+  COMMON: {
+    POPULAR: "popular",
+    TOP_RATED: "top_rated",
+  },
+  MOVIE_TYPE,
+  TV_SERIES_TYPE,
 };
