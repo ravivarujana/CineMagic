@@ -10,7 +10,7 @@ const VideoBackground = ({ movieId }) => {
   return (
     <div className="">
       <iframe
-        className="aspect-video w-screen"
+        className="aspect-video w-full"
         src={`https://www.youtube.com/embed/${trailerData?.key}?autoplay=1&mute=1&modestbranding=1&showinfo=0&controls=0&rel=0`}
         title="Deadpool &amp; Wolverine | Final Trailer | In Theaters July 26"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"

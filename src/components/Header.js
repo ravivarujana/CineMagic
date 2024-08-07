@@ -36,9 +36,10 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="absolute flex justify-center py-6 px-10 bg-gradient-to-b from-black w-full h-24">
-      <div className="flex justify-between w-9/12">
-        <h1 className="text-white font-bold text-3xl">CINEMAGIC</h1>
+    <div className="absolute flex justify-center py-4 px-10 bg-gradient-to-b from-black w-full h-20 z-50 ">
+      <div className="flex justify-between w-9/12 items-center">
+        {/* <h1 className="text-[rgb(180,27,27)] font-bold text-4xl">CINEMAGIC</h1> */}
+        <img className="h-44" src={`${process.env.PUBLIC_URL}/CINEMAGIC.png`} />
         {user && (
           <div className="">
             <span className="font-bold text-white mr-4">
@@ -46,7 +47,7 @@ const Header = () => {
             </span>
             <button
               onClick={handleSignOut}
-              className="text-white bg-[#ff0000] px-4 py-2 rounded-lg cursor-pointer"
+              className="text-white bg-[rgb(121,37,37)] px-4 py-2 rounded-lg cursor-pointer"
             >
               Sign Out
             </button>
