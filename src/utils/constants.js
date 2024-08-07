@@ -20,6 +20,8 @@ export const API_OPTIONS = {
   },
 };
 
+export const IMAGE_URL = "https://image.tmdb.org/t/p/w300/";
+
 export const MOVIE_TV_LIST_API = {
   MOVIE_LIST: "https://api.themoviedb.org/3/movie/now_playing?page=1",
   TV_LIST: "https://api.themoviedb.org/3/tv/now_playing?page=1",
